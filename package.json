@@ -1,0 +1,24 @@
+{
+  "name": "soccer_oracle",
+  "version": "0.0.1",
+  "description": "soccer oracle",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node api/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://richard-martens@bitbucket.org/richard-martens/soccer_oracle.git"
+  },
+  "keywords": [
+    "soccer",
+    "oracle"
+  ],
+  "author": "Richard Martens",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/richard-martens/soccer_oracle#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
