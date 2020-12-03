@@ -3,7 +3,7 @@ import "./style.css";
 import PageHeader from "./PageHeader";
 import Alert from "./Alert";
 
-export default class Index extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
 
@@ -23,7 +23,7 @@ export default class Index extends React.Component {
     } catch(e) {
       this.setState({
         errors: [e]
-      };
+      });
     }
   }
 

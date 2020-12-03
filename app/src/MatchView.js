@@ -1,11 +1,8 @@
 import React from "react";
 import service from "./Service";
 import Form from "./Form";
-import RapidComboBox from "./RapidComboBox";
-import RapidNumberBox from "./RapidNumberBox";
-import RapidDateBox from "./RapidDateBox";
-import NotFoundError from "./NotFoundError";
-import FieldError from "./FieldError";
+import Select from "./Select";
+import Input from "./Input";
 import PageHeader from "./PageHeader";
 
 export default class MatchView extends React.Component {
@@ -44,7 +41,7 @@ export default class MatchView extends React.Component {
         });
       }
     } catch (e) {
-      if (e instanceof NotFoundError) {
+      if (e.httpCode == 401) {
         this.props.history.push("/not-found");
       } else {
         this.setState(state => ({
@@ -159,53 +156,56 @@ export default class MatchView extends React.Component {
         <PageHeader title={title} history={this.props.history} />
 
         <Form onSubmit={this.save} errors={errors} validated={this.state.sent}>
-          <RapidDateBox
+          <Input
             id="txtGameday"
             meta="/match/gameDay"
             onChange={this.onChangeGameDay}
             value={this.state.match.gameDay}
+            type="date"
             errors={errors.filter(
-              error => error instanceof FieldError && error.field === "gameDay"
+              error => error.field === "gameDay"
             )}
           />
-          <RapidComboBox
+          <Select
             id="cmbTeam1"
             onChange={this.onSelectTeam}
             value={this.state.match.host.id}
             meta="/match/host"
             errors={errors.filter(
-              error => error instanceof FieldError && error.field === "host.id"
+              error => error.field === "host.id"
             )}
           />
-          <RapidComboBox
+          <Select
             id="cmbTeam2"
             meta="/match/guest"
             onChange={this.onSelectTeam}
             value={this.state.match.guest.id}
             errors={errors.filter(
-              error => error instanceof FieldError && error.field === "guest.id"
+              error => error.field === "guest.id"
             )}
           />
           <div className="form-row">
-            <RapidNumberBox
+            <Input
               id="txtGoals1"
               onChange={this.onChangeGoal}
               value={this.state.match.host.goals}
               meta="/participant/goals"
+              type="number"
               errors={errors.filter(
                 error =>
-                  error instanceof FieldError && error.field === "host.goals"
+                  error.field === "host.goals"
               )}
               inline={true}
             />
-            <RapidNumberBox
+            <Input
               id="txtGoals2"
               onChange={this.onChangeGoal}
               value={this.state.match.guest.goals}
               meta="/participant/goals"
+              type="number"
               errors={errors.filter(
                 error =>
-                  error instanceof FieldError && error.field === "guest.goals"
+                  error.field === "guest.goals"
               )}
               inline={true}
             />

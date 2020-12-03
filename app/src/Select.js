@@ -1,7 +1,7 @@
 import React from "react";
 import FormGroup from "./FormGroup";
 
-export default class ComboBox extends React.Component {
+export default class Select extends React.Component {
   constructor(props) {
     super(props);
 

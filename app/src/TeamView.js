@@ -1,9 +1,7 @@
 import React from "react";
 import service from "./Service";
-import FieldError from "./FieldError";
-import RapidForm from "./RapidForm";
+import Form from "./RapidForm";
 import PageHeader from "./PageHeader";
-import NotFoundError from "./NotFoundError";
 
 export default class TeamView extends React.Component {
   constructor(props) {
@@ -99,7 +97,7 @@ export default class TeamView extends React.Component {
     return (
       <div>
         <PageHeader title={title} history={this.props.history} />
-        <RapidForm
+        <Form
           meta="/team"
           operation={this.props.match.params.id ? "update" : "create"}
           errors={errors}

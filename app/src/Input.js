@@ -1,7 +1,7 @@
 import React from "react";
 import FormGroup from "./FormGroup";
 
-export default class DateBox extends React.Component {
+export default class Input extends React.Component {
   constructor(props) {
     super(props);
 
@@ -32,7 +32,7 @@ export default class DateBox extends React.Component {
         <input
           id={this.props.id}
           name={this.props.id}
-          type="date"
+          type={this.props.type}
           className={
             errors.length
               ? "form-control is-invalid"
@@ -41,6 +41,7 @@ export default class DateBox extends React.Component {
           onChange={this.props.onChange}
           value={this.props.value}
           required={this.props.required}
+          min={props.min}
         />
       </FormGroup>
     );
