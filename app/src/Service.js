@@ -1,7 +1,3 @@
-import FieldError from "./FieldError";
-import NotFoundError from "./NotFoundError";
-import MultipleError from "./MultipleError";
-
 class Service {
   constructor() {
     this.data = {
@@ -281,7 +277,9 @@ class Service {
         if (result) {
           resolve(Object.assign({}, result));
         } else {
-          throw new NotFoundError(`Entität nicht gefunden`);
+          let e = new Error(`Entität nicht gefunden`);
+          e.httpStatus = 401.
+          throw e;
         }
       } catch (e) {
         reject(e);
@@ -385,7 +383,9 @@ class Service {
 
           resolve(Object.assign({}, result));
         } else {
-          throw new NotFoundError();
+          let e = new Error('Nicht gefunden');
+          e.httpStatus = 401.
+          throw e;
         }
       } catch (e) {
         reject(e);
@@ -413,7 +413,9 @@ class Service {
           collection.splice(index, 1);
           resolve();
         } else {
-          throw new NotFoundError();
+          let e = new Error('Nicht gefunden');
+          e.httpStatus = 401.
+          throw e;
         }
       } catch (e) {
         reject(e);
@@ -477,7 +479,9 @@ class Service {
 
   getCollection(path, metadataPath) {
     if (!metadataPath) {
-      throw new NotFoundError(`Ressource "${path}" nicht gefunden`);
+      let e = new Error(`Ressource "${path}" nicht gefunden`);
+      e.httpStatus = 401.
+      throw e;
     }
 
     return this.data[metadataPath.collection];
@@ -542,8 +546,12 @@ class Service {
   }
 
   validateProperties(property, data, error) {
+    error.errors = error.errors ?? [];
+
     if (property.required && !data[property.name]) {
-      error.errors.push(new FieldError(property.name));
+      let e = new Error("Das ist ein Pflichtfeld");
+      e.field = property.name;
+      error.errors.push(e);
     }
 
     //rekursiver Aufruf für die Validierung
@@ -557,7 +565,7 @@ class Service {
   }
 
   validateEntity(metadataPath, collection, operation, data) {
-    let error = new MultipleError(),
+    let error = new Error(),
       type = this.metadata.types.find(type => type.name === metadataPath.type);
 
     type.properties.forEach(property =>
@@ -591,10 +599,9 @@ class Service {
 
   validateMatch(metadataPath, collection, operation, data) {
     if (data.host.id === data.guest.id) {
-      throw new FieldError(
-        "guest.id",
-        "Wählen Sie zwei unterschiedliche Teams aus"
-      );
+      let e = new Error("Wählen Sie zwei unterschiedliche Teams aus");
+      e.field = "guest.id";
+      throw e;
     }
   }
 

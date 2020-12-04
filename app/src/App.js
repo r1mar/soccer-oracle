@@ -1,5 +1,4 @@
 import React from "react";
-import "./style.css";
 import PageHeader from "./PageHeader";
 import Alert from "./Alert";
 
@@ -9,7 +8,7 @@ export default class App extends React.Component {
 
     this.state = {
       message: "",
-      errors = []
+      errors: []
     };
   }
 

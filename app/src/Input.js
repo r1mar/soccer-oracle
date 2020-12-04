@@ -41,7 +41,7 @@ export default class Input extends React.Component {
           onChange={this.props.onChange}
           value={this.props.value}
           required={this.props.required}
-          min={props.min}
+          min={this.props.min}
         />
       </FormGroup>
     );

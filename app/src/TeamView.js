@@ -1,6 +1,6 @@
 import React from "react";
 import service from "./Service";
-import Form from "./RapidForm";
+import Form from "./Form";
 import PageHeader from "./PageHeader";
 
 export default class TeamView extends React.Component {
