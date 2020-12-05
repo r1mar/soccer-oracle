@@ -4,13 +4,18 @@ const port = 3000;
 
 app.use(express.static('app/build'));
 
-app.get('/api/teams', (req, res) => {
+app.get('/api/teams', (req, res, next) => {
   fetch('https://www.openligadb.de/api/getavailableteams/bl1/2020')
     .then(function(teams) {
       return red.json(teams);
     }).catch(function(error) {
       res.status(500).send(error.message);
     });
+});
+
+app.use(function(req, res) {
+  res.status(404).send('Nicht gefunden');
+  condole.log('404 - Nicht gefunden');
 });
 
 app.listen(port, () => {
