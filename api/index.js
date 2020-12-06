@@ -19,6 +19,7 @@ app.get('/api/teams', (req, res, next) => {
 app.use(function(err, req, res) {
   res.status(500).send(err.message);
   console.log('500 - ' + err.message);
+});
 
 app.use(function(req, res) {
   res.status(404).send('Nicht gefunden');
