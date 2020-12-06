@@ -7,17 +7,18 @@ export default class App extends React.Component {
     super(props);
 
     this.state = {
-      message: "",
+      teams: [],
       errors: []
     };
   }
 
   async componentDidMount() {
     try {
-      let response = await fetch("/api");
+      let response = await fetch("/api/teams"),
+        teams = await response.json();
 
       this.setState({
-        message: await response.text()
+        teams: teams
       });
     } catch(e) {
       this.setState({
@@ -27,10 +28,12 @@ export default class App extends React.Component {
   }
 
   render() {
+    let teams = this.state.teams.map(team => <h2>{team.TeamName}</h2>);
+
     return (
       <div>
         <PageHeader history={this.props.history} title="Startseite" />
-        <h2>{this.state.message}</h2>
+        {teams}
         <Alert messages={this.state.errors} />
       </div>
     );

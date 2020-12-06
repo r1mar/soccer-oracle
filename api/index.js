@@ -2,20 +2,28 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+global.fetch = require('node-fetch');
+
 app.use(express.static('app/build'));
 
 app.get('/api/teams', (req, res, next) => {
   var currentDate = new Date(),
       currentYear = currentDate.getFullYear(),
       currentMonth = currentDate.getMonth(),
-      year = currentMonth >= 6 ? currentYear : --currentYear;
+      year = currentMonth >= 5 ? currentYear : --currentYear,
+      uri = 'https://www.openligadb.de/api/getavailableteams/bl1/' + year;
 
-  fetch('https://www.openligadb.de/api/getavailableteams/bl1/' + year, {
+  console.log(uri);
+
+  fetch(uri, {
       headers: {
         accept: 'application/json'
-      })
-    .then(function(teams) {
-      return res.json(teams);
+      }})
+    .then(function(res) {
+      return res.json();
+    })
+    .then(function(json) {
+      res.json(json);
     });
 });
 
