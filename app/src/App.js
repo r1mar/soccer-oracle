@@ -1,6 +1,8 @@
 import React from "react";
 import PageHeader from "./PageHeader";
 import Alert from "./Alert";
+import Form from "./Form";
+import Select from "./Select";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -12,6 +14,9 @@ export default class App extends React.Component {
       team2: {},
       errors: []
     };
+
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onSelectTeam = this.onSelectTeam.bind(this);
   }
 
   async componentDidMount() {
@@ -48,14 +53,29 @@ export default class App extends React.Component {
     }
   }
 
+  onSubmit(event) {
+    event.preventDefault();
+  }
 
   render() {
-    let teams = this.state.teams.map(team => <h2>{team.TeamName}</h2>);
+    let teams = this.state.teams.map(team => <option value={team.TeamId}><img src={team.TeamIconUrl} /> {team.TeamName}</option>);
 
     return (
       <div>
         <PageHeader history={this.props.history} title="Startseite" />
-        {teams}
+         <Form onSubmit={this.onSubmit}>
+          <Select
+            id="cmbTeam1"
+            required={true}
+            onChange={this.onSelectTeam}
+            value={this.state.team1.TeamId}
+          >{teams}</Select>
+          <Select
+            id="cmbTeam2"
+            required={true}
+            onChange={this.onSelectTeam}
+            value={this.state.team2.TeamId}
+          >{teams}</Select>
         <Alert messages={this.state.errors} />
       </div>
     );
