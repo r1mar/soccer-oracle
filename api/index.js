@@ -10,9 +10,12 @@ app.get('/api/teams', (req, res, next) => {
       currentMonth = currentDate.getMonth(),
       year = currentMonth >= 6 ? currentYear : --currentYear;
 
-  fetch('https://www.openligadb.de/api/getavailableteams/bl1/' + year)
+  fetch('https://www.openligadb.de/api/getavailableteams/bl1/' + year, {
+      headers: {
+        accept: 'application/json'
+      })
     .then(function(teams) {
-      return red.json(teams);
+      return res.json(teams);
     });
 });
 
