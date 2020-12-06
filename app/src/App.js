@@ -8,6 +8,8 @@ export default class App extends React.Component {
 
     this.state = {
       teams: [],
+      team1: {},
+      team2: {},
       errors: []
     };
   }
@@ -25,7 +27,27 @@ export default class App extends React.Component {
         errors: [e]
       });
     }
+  } 
+
+  onSelectTeam(event) {
+    try {
+      if (event.target.id === "cmbTeam1") {
+        this.setState({
+          team1: this.state.teams.find(team => team.TeamId === event.target.value)
+        });
+      } else {
+        this.setState({
+          team2: this.state.teams.find(team => team.TeamId === event.target.value)
+        });
+      }
+
+    } catch (e) {
+      this.setState({
+        errors: [e]
+      });
+    }
   }
+
 
   render() {
     let teams = this.state.teams.map(team => <h2>{team.TeamName}</h2>);
