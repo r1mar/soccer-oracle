@@ -13,14 +13,17 @@ app.get('/api/teams', (req, res, next) => {
       year = currentMonth >= 5 ? currentYear : --currentYear,
       uri = 'https://www.openligadb.de/api/getavailableteams/bl1/' + year;
 
-  console.log(uri);
-
   fetch(uri, {
       headers: {
         accept: 'application/json'
       }})
     .then(function(res) {
+      console.log(res.statusCode + " - " + res.url);
       return res.json();
+    })
+    .catch(function(e) {
+      console.log("500 - " + e.message);
+      res.status(500).send(e.message);
     })
     .then(function(json) {
       res.json(json);

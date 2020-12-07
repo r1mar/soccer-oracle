@@ -21,18 +21,28 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     try {
-      let response = await fetch("/api/teams"),
-        teams = await response.json();
+      let response, teams, error;
 
-      this.setState({
-        teams: teams
-      });
-    } catch(e) {
+      response = await fetch("/api/teams");
+      
+      if(response.statusCode === 200) {
+        teams = await response.json();
+  
+        this.setState({
+          teams: teams
+        });
+
+      } else {
+        throw new Error(response.text())
+      }
+
+    } catch (e) {
       this.setState({
         errors: [e]
       });
+      
     }
-  } 
+  }
 
   onSelectTeam(event) {
     try {
@@ -55,27 +65,51 @@ export default class App extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
+
+    if(this.state.team1.TeamId === this.state.team2.TeamId) {
+      const message = "Wählen Sie unterschiedliche Teams";
+      let e = new Error(message),
+        errors = [e];
+
+      e.field = "team1";
+
+      e = new Error(message)
+      e.field = "team2";
+      errors.push(e);
+
+      this.setState({
+        errors: e
+      });
+    }
   }
 
   render() {
-    let teams = this.state.teams.map(team => <option value={team.TeamId}><img src={team.TeamIconUrl} /> {team.TeamName}</option>);
+    let teams = this.state.teams.map(team => ({
+      id: team.TeamId,
+      value: (<div><img src={team.TeamIconUrl} /> {team.TeamName}</div>)
+    }));
 
     return (
       <div>
         <PageHeader history={this.props.history} title="Startseite" />
-         <Form onSubmit={this.onSubmit}>
+        <Form onSubmit={this.onSubmit}>
           <Select
             id="cmbTeam1"
             required={true}
             onChange={this.onSelectTeam}
             value={this.state.team1.TeamId}
-          >{teams}</Select>
+            options={teams}
+            errors={this.state.errors.filter(error => error.field === 'team1')}
+          />
           <Select
             id="cmbTeam2"
             required={true}
             onChange={this.onSelectTeam}
             value={this.state.team2.TeamId}
-          >{teams}</Select>
+            options={teams}
+            errors={this.state.errors.filter(error => error.field === 'team2')}
+          />
+        </Form>
         <Alert messages={this.state.errors} />
       </div>
     );
