@@ -20,6 +20,7 @@
   "homepage": "https://bitbucket.org/richard-martens/soccer_oracle#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "http-proxy-agent": "^4.0.1",
     "node-fetch": "^2.6.1"
   }
 }
