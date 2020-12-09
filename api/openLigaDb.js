@@ -1,9 +1,9 @@
 const teams = require("./teams.json");
 const matches = require("./matches.json");
 
-function callOpenLigaDb(dbUri, dbRes, res, next) {
+function callOpenLigaDb(dbUri, dbRes, next) {
     if (process.env.https_proxy) {
-        res.json(dbRes);
+        Return new Promise(resolve, reject => resolve(dbRes));
 
     } else {
         var currentDate = new Date(),
@@ -37,11 +37,11 @@ function callOpenLigaDb(dbUri, dbRes, res, next) {
     }
 }
 
-exports.teams = function (res, next) {
+exports.teams = function (next) {
     return callOpenLigaDb("https://www.openligadb.de/api/getavailableteams/bl1/", teams, res, next);
 };
 
 
-exports.matches = function (res, next) {
+exports.matches = function (next) {
     return callOpenLigaDb("https://www.openligadb.de/api/getmatchdata/bl1/", matches, res, next);
 };
