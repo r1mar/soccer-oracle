@@ -4,17 +4,16 @@ const port = 3000;
 const openLigaDb = require("./openLigaDb");
 const brain = require("./brain");
 
-global.fetch = require("node-fetch");
-
 app.use(express.static("app/build"));
 
 app.get("/api/teams", (req, res, next) => {
-  openLigaDb.teams(next)
+  openLigaDb.teams()
     .then( teams => {
       if(teams) {
         res.json(teams);
       }
-    });
+    })
+    .catch(e => next(e));
 });
 
 app.get("/api/prediction/:team1/:team2", (req, res, next) => {
