@@ -9,7 +9,7 @@ global.fetch = require("node-fetch");
 app.use(express.static("app/build"));
 
 app.get("/api/teams", (req, res, next) => {
-  openLigaDb.teams(res, next)
+  openLigaDb.teams(next)
     .then( teams => {
       if(teams) {
         res.json(teams);
@@ -18,10 +18,9 @@ app.get("/api/teams", (req, res, next) => {
 });
 
 app.get("/api/prediction/:team1/:team2", (req, res, next) => {
-  openLigaDb.matches(res, next)
-    .then(matches => {
-      res.json(brain.getPrediction(matches, team1, team2));
-    });
+  const prediction = brain.getPrediction(req.params.team1, req.params.team2));
+  
+  res.json(prediction);
 });
 
 app.use(function (err, req, res) {
