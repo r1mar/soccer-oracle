@@ -1,6 +1,8 @@
 const teams = require("./teams.json");
 const matches = require("./matches.json");
 
+global.fetch = require("node-fetch");
+
 function callOpenLigaDb(dbUri, dbRes) {
     return new Promise(resolve, reject => {
     if (process.env.https_proxy) {
