@@ -19,6 +19,7 @@
   "license": "MIT",
   "homepage": "https://bitbucket.org/richard-martens/soccer_oracle#readme",
   "dependencies": {
+    "brain.js": "^2.0.0-beta.2",
     "express": "^4.17.1",
     "http-proxy-agent": "^4.0.1",
     "node-fetch": "^2.6.1"
