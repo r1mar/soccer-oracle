@@ -6,20 +6,28 @@ const brain = require("./brain");
 
 app.use(express.static("app/build"));
 
-app.get("/api/teams", (req, res, next) => {
-  openLigaDb.teams()
-    .then( teams => {
-      if(teams) {
-        res.json(teams);
-      }
-    })
-    .catch(e => next(e));
+app.get("/api/teams", async (req, res, next) => {
+  try {
+    var teams = await openLigaDb.teams()
+
+    if (teams) {
+      res.json(teams);
+    }
+
+  } catch (e) {
+    next(e);
+  }
 });
 
-app.get("/api/prediction/:team1/:team2", (req, res, next) => {
-  const prediction = brain.getPrediction(req.params.team1, req.params.team2));
-  
-  res.json(prediction);
+app.get("/api/prediction/:team1/:team2", async (req, res, next) => {
+  try {
+    const prediction = await brain.getPrediction(req.params.team1, req.params.team2);
+
+    res.json(prediction);
+
+  } catch (e) {
+    next(e);
+  }
 });
 
 app.use(function (err, req, res) {

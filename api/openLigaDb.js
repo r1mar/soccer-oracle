@@ -3,10 +3,9 @@ const matches = require("./matches.json");
 
 global.fetch = require("node-fetch");
 
-function callOpenLigaDb(dbUri, dbRes) {
-    return new Promise(resolve, reject => {
+async function callOpenLigaDb(dbUri, dbRes) {
     if (process.env.https_proxy) {
-        resolve(dbRes);
+        return dbRes;
 
     } else {
         var currentDate = new Date(),
@@ -16,35 +15,28 @@ function callOpenLigaDb(dbUri, dbRes) {
 
         uri = dbUri + year;
 
-        return fetch(uri, {
+        var response = await fetch(uri, {
             headers: {
                 accept: "application/json"
             }
-        })
-            .then(function (res) {
-                if (!res.ok) {
-                    res.text().then(function (text) {
-                        reject(new Error(text));
-                    });
+        });
+        if (response.ok) {
+            return response.json();
 
-                } else {
-                    resolve(res.json());
+        } else {
+            var text = await res.text();
 
-                }
+            throw new Error(text);
 
-            })
-            .catch(e => {
-                reject(e);
-
-            });
-    }});
+        }
+    }
 }
 
-exports.teams = function (next) {
-    return callOpenLigaDb("https://www.openligadb.de/api/getavailableteams/bl1/", teams, res, next);
+exports.teams = function () {
+    return callOpenLigaDb("https://www.openligadb.de/api/getavailableteams/bl1/", teams);
 };
 
 
-exports.matches = function (next) {
-    return callOpenLigaDb("https://www.openligadb.de/api/getmatchdata/bl1/", matches, res, next);
+exports.matches = function () {
+    return callOpenLigaDb("https://www.openligadb.de/api/getmatchdata/bl1/", matches);
 };
