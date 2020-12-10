@@ -1,11 +1,9 @@
 const brain = require("brain");
 const openLigaDb = require("./openLigaDb");
 
-exports.getPrediction = async function (matches, team1, team2) { 
-    const net = new brain.NeuralNetwork();
-    const teams = await openLigaDb.teams();
-    const matches = await openLigaDb.matches();
-    const trainData = matches.filter(match => match.MatchIsFinished)
+exports.train = (teams, matches) => {
+  const net = new brain.NeuralNetwork();
+  const trainData = matches.filter(match => match.MatchIsFinished)
         .sort(( a, b ) => {
             if ( a.MatchDateTimeUTC < b.MatchDateTimeUTC ){
                 return -1;
@@ -44,9 +42,20 @@ exports.getPrediction = async function (matches, team1, team2) {
     
     net.train(trainData);
 
+    return net;
+}
+
+exports.run = (net, teams, team1, team2) => {
     const host = teams.map(team => team.TeamId === team1 ? 1 : 0),
           guest = teams.map(team => team.TeamId === team2 ? 1 : 0);
 
     return net.run([...host, ...guest]);
+}
 
+exports.getPrediction = async (team1, team2) => { 
+    const teams = await openLigaDb.teams();
+    const matches = await openLigaDb.matches();
+    const net = exports.train(teams, matches);
+   
+    return exports.run(net, teams, team1, team2);
 }
