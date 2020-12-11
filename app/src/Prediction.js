@@ -14,7 +14,13 @@ export default class Prediction {
 
     async componentDidMount() {
         try {
-            let response, teams, error;
+            let response, teams, error,
+              sort = (a,b) => {
+                        let key1 = Object.keys(a)[0],
+                            key2 = Object.keys(b)[0];
+
+                        return a[key1] - b[key2];
+                      };
 
             response = await fetch(`/api/prediction/${this.props.match.params.team1}/${this.props.match.params.team2}`);
 
@@ -22,7 +28,10 @@ export default class Prediction {
                 prediction = await response.json();
 
                 this.setState({
-                    teams: teams
+                    prediction: {
+                      winner: prediction.splice(0,3).sort(sort)[0],
+                      goals1: prediction.splice(3,10).sort(sort)[0],
+                      goals2: prediction.splice(13).sort(sort)[0]
                 });
 
             } else {
