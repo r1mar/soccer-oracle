@@ -18,17 +18,24 @@ exports.train = (teams, matches) => {
                   guest = teams.map(team => team.TeamId === match.Team2.TeamId ? 1 : 0),
                   matchResult = match.MatchResults.find(matchResult => matchResult.ResultTypeID === 2);
 
-            var winner = [0,0,0];
+            var winner = [{ 
+                [match.team1.TeamName]: 0
+              }, { 
+                "Unentschieden": 0
+              }, {
+                [match.team2.TeamName]: 0
+            }];
+
             if(matchResult.PointsTeam1 > matchResult.PointsTeam2) {
-              winner[0] = 1;
+              winner[0][match.team1.TeamName] = 1;
             }
 
             if(matchResult.PointsTeam1 === matchResult.PointsTeam2) {
-              winner[1] = 1;
+              winner[1].Unentschieden = 1;
             }
 
             if(matchResult.PointsTeam1 < matchResult.PointsTeam2) {
-              winner[2] = 1;
+              winner[2][match.team2.TeamName] = 1;
             }
 
             var goalsHost = [], goalsGuest = [];
