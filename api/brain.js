@@ -38,11 +38,13 @@ exports.train = (teams, matches) => {
               winner[2][match.team2.TeamName] = 1;
             }
 
-            var goalsHost = [], goalsGuest = [];
+            var goalsHost = [], goalsGuest = [], goalLabel;
 
             do {
-              goalsHost.push(matchResult.PointsTeam1 === goalsHost.length + 1 || goalsHost.length === 10 ? 1 : 0;
-              goalsGuest.push(matchResult.PointsTeam2 === goalsGuest.length + 1 || goalsGuest.length === 10 ? 1 : 0;
+              goalLabel = (goalsHost.length + 1).toString();
+              goalLabel = goalsHost.length >= 10 ? ">= " + goalLabel : goalLabel;
+              goalsHost.push(matchResult.PointsTeam1 === goalsHost.length + 1 || goalsHost.length === 10 ? { [goalLabel]: 1 } : { [goalLabel]: 0 };
+              goalsGuest.push(matchResult.PointsTeam2 === goalsGuest.length + 1 || goalsGuest.length === 10 ? { [goalLabel]: 1 } : { [goalLabel]: 0 };
             } while(goalsHost.length < 10)
 
             return {
