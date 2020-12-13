@@ -21,7 +21,7 @@ app.get("/api/teams", async (req, res, next) => {
 
 app.get("/api/prediction/:team1/:team2", async (req, res, next) => {
   try {
-    const prediction = await brain.getPrediction(req.params.team1, req.params.team2);
+    const prediction = await brain.getPrediction(+req.params.team1, +req.params.team2);
 
     res.json(prediction);
 

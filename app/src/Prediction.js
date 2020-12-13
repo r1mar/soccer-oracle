@@ -1,12 +1,20 @@
 import React from "react";
+import PageHeader from "./PageHeader";
 
-export default class Prediction {
+export default class Prediction extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            prediction: {},
+            prediction: {
+                team1: {},
+                team2: {},
+                "final-score": {
+                    team1: {},
+                    team2: {}
+                }
+            },
             errors: []
         };
 
@@ -25,13 +33,8 @@ export default class Prediction {
             response = await fetch(`/api/prediction/${this.props.match.params.team1}/${this.props.match.params.team2}`);
 
             if (response.status === 200) {
-                prediction = await response.json();
-
                 this.setState({
-                    prediction: {
-                      winner: prediction.splice(0,3).sort(sort)[0],
-                      goals1: prediction.splice(3,10).sort(sort)[0],
-                      goals2: prediction.splice(13).sort(sort)[0]
+                    prediction: await response.json()
                 });
 
             } else {
@@ -48,9 +51,18 @@ export default class Prediction {
     }
 
     render() {
+        let draw = this.state.prediction.draw ? <p>ended mit einem Unentschieden({this.state.prediction.draw.probability}%)</p> : null,
+            winner = this.state.prediction.winner ? <p> mit einem Sieg von {this.state.prediction.winner.team.TeamName}({this.state.prediction.winner.probability}%)</p> : null,
+            result = <p>{this.state.prediction["final-score"].team1.goals}({this.state.prediction["final-score"].team1.probability}%) : {this.state.prediction["final-score"].team2.goals}({this.state.prediction["final-score"].team2.probability}%)</p>
+
         return (
             <div>
                 <PageHeader history={this.props.history} title="Vorhersage" />
+                <p>Das Spiel</p>
+                <h2>{this.state.prediction.team1.TeamName} : {this.state.prediction.team2.TeamName}</h2>
+                {draw}
+                {winner}
+                {result}
             </div>
         );
     }

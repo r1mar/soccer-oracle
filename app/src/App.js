@@ -67,7 +67,7 @@ export default class App extends React.Component {
     event.preventDefault();
 
     if (this.state.team1.TeamId != this.state.team2.TeamId) {
-      this.history.push(`/prediction/${this.state.team1.TeamId}/${this.state.team2.TeamId}`);
+      this.props.history.push(`/prediction/${this.state.team1.TeamId}/${this.state.team2.TeamId}`);
 
     } else {
       const message = "Wählen Sie unterschiedliche Teams";
