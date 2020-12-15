@@ -31,7 +31,7 @@ export default class App extends React.Component {
           teams: teams
         });
 
-      } else if(response.status === 400) {
+      } else if(response.status === 404) {
         this.props.history.push("/setup");
 
       } else {

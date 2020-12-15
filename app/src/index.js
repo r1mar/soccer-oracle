@@ -15,7 +15,7 @@ ReactDOM.render(
     <Switch>
       <Route exact path="/" component={App} />
       <Route exact path="/prediction/:team1/:team2" component={Prediction} />
-      <Route exact path="/setup" component={Prediction} />
+      <Route exact path="/setup" component={Setup} />
       <Route path="/not-found" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
