@@ -31,9 +31,13 @@ export default class App extends React.Component {
           teams: teams
         });
 
+      } else if(response.status === 400) {
+        this.props.history.push("/setup");
+
       } else {
         error = await response.text();
         throw new Error(error);
+        
       }
 
     } catch (e) {

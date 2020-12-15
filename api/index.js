@@ -3,15 +3,18 @@ const app = express();
 const port = 3000;
 const openLigaDb = require("./openLigaDb");
 const brain = require("./brain");
+const db = require("./mongo");
 
 app.use(express.static("app/build"));
 
 app.get("/api/teams", async (req, res, next) => {
   try {
-    var teams = await openLigaDb.teams()
+    var teams = await db.getTeams(); //openLigaDb.teams()
 
     if (teams) {
       res.json(teams);
+    } else {
+      res.status(404).send("Nicht gefunden");
     }
 
   } catch (e) {
@@ -32,12 +35,10 @@ app.get("/api/prediction/:team1/:team2", async (req, res, next) => {
 
 app.use(function (err, req, res) {
   res.status(500).send(err.message);
-  console.log("500 - " + err.message);
 });
 
 app.use(function (req, res) {
   res.status(404).send("Nicht gefunden");
-  condole.log("404 - Nicht gefunden");
 });
 
 app.listen(port, () => {

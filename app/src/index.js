@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import App from "./App";
 import Prediction from "./Prediction";
+import Setup from "./Setup";
 import NotFound from "./NotFound";
 import * as serviceWorker from './serviceWorker';
 
@@ -14,6 +15,7 @@ ReactDOM.render(
     <Switch>
       <Route exact path="/" component={App} />
       <Route exact path="/prediction/:team1/:team2" component={Prediction} />
+      <Route exact path="/setup" component={Prediction} />
       <Route path="/not-found" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
